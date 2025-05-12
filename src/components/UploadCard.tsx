@@ -1,7 +1,8 @@
 "use client";
-import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 
 export function UploadCard() {
   const [image, setImage] = React.useState<File | null>(null);
@@ -9,6 +10,7 @@ export function UploadCard() {
   const [text, setText] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const router = useRouter();
+  const setAnalysisResult = useAppStore((state) => state.setAnalysisResult);
 
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -42,11 +44,44 @@ export function UploadCard() {
     setImagePreview(null);
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: Send image and text to /api/analyze
-    // On success, navigate to analyze page
-    router.push("/dashboard/analyze");
+    if (!image || !text) {
+      setError("Please provide both an image and text.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("text", text);
+
+    // Clear previous analysis result before uploading a new image
+    setAnalysisResult(null); // Clear the state to avoid showing outdated data
+
+    try {
+      const response = await fetch("http://localhost:5000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        console.error("Error details:", errorDetails);
+        throw new Error("Failed to fetch data.");
+      }
+
+      const data = await response.json();
+      console.log("API Response:", data);
+      setAnalysisResult(data); // Store the result in shared state
+      router.push("/dashboard/analyze");
+    } catch (err) {
+      console.error("Error:", err);
+      if (err instanceof Error) {
+        setError(err.message || "An unexpected error occurred.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
   }
 
   return (
@@ -90,7 +125,7 @@ export function UploadCard() {
             placeholder="Type or paste text here..."
           />
         </div>
-        <Button type="submit" size="lg" className="w-full mt-2">Analyze</Button>
+        <Button type="button" size="lg" className="w-full mt-2" onClick={handleSubmit}>Analyze</Button>
       </form>
     </div>
   );

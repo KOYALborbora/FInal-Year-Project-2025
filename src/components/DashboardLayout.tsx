@@ -1,8 +1,8 @@
 "use client";
 
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { Navbar, NavbarContent, NavbarItem, NavbarProfileDropdown } from "@/components/ui/navbar";
-import { Upload, BarChart, Brain, History } from "lucide-react";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { BarChart, Brain, Upload } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -11,7 +11,6 @@ const sidebarItems = [
   { title: "Upload", icon: Upload, href: "/dashboard/upload" },
   { title: "Analyze", icon: BarChart, href: "/dashboard/analyze" },
   { title: "Explainability", icon: Brain, href: "/dashboard/explain" },
-  { title: "History", icon: History, href: "/dashboard/history" },
 ];
 
 export function DashboardLayout({ children }: { children?: React.ReactNode }) {

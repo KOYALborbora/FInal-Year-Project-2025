@@ -7,10 +7,10 @@ export function HeroSection() {
   const router = useRouter();
   return (
     <section className="w-full flex flex-col items-center justify-center py-20 px-4 text-center gap-8">
-      <h1 className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-sky-500 to-emerald-400 bg-clip-text text-transparent animate-fade-in-up">
+      <h1 className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent animate-fade-in-up drop-shadow-md">
         GradientSentimentAI
       </h1>
-      <p className="text-lg sm:text-2xl text-muted-foreground max-w-xl animate-fade-in-up delay-100">
+      <p className="text-lg sm:text-2xl text-black max-w-xl animate-fade-in-up delay-100">
         Understand Emotions. Beyond Text and Images.
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6 animate-fade-in-up delay-200">

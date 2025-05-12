@@ -20,6 +20,9 @@ interface AppState {
   analysis: AnalysisResult;
   setAnalysis: (result: AnalysisResult) => void;
   clearAnalysis: () => void;
+
+  analysisResult: any | null;
+  setAnalysisResult: (result: any) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -33,4 +36,7 @@ export const useAppStore = create<AppState>((set) => ({
   analysis: null,
   setAnalysis: (analysis) => set({ analysis }),
   clearAnalysis: () => set({ analysis: null }),
+
+  analysisResult: null,
+  setAnalysisResult: (result) => set({ analysisResult: result }),
 }));

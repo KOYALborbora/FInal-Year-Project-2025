@@ -1,5 +1,8 @@
-import { DashboardLayout } from "@/components/DashboardLayout";
+import { redirect } from "next/navigation";
 
 export default function DashboardPage() {
-  return <DashboardLayout />;
+  // Redirect to the Upload page by default
+  redirect("/dashboard/upload");
+
+  return null;
 }

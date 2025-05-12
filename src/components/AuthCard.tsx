@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 
 interface AuthCardProps {
   mode: "login" | "signup";
@@ -62,6 +62,10 @@ export function AuthCard({ mode }: AuthCardProps) {
         setUser(data.user);
         // Set a session token cookie for middleware protection
         document.cookie = `token=mock-jwt-token; path=/;`;
+        if (mode === "login") {
+          router.replace("/loading");
+          return;
+        }
         router.replace("/dashboard");
       } else {
         setErrors({ form: data.message || "Authentication failed." });

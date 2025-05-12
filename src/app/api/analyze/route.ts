@@ -1,13 +1,28 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  // Example: { image: <base64 or url>, text: "..." }
-  const body = await req.json();
-  // TODO: Analyze sentiment
-  return NextResponse.json({
-    textSentiment: "Positive",
-    imageSentiment: "Neutral",
-    textScore: 0.87,
-    imageScore: 0.55,
-  });
+  try {
+    const formData = await req.formData();
+    const image = formData.get("image");
+    const text = formData.get("text");
+
+    if (!image || !text) {
+      return NextResponse.json({ error: "Image and text are required." }, { status: 400 });
+    }
+
+    const apiResponse = await fetch("http://localhost:5000/predict", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!apiResponse.ok) {
+      throw new Error("Failed to fetch data from the backend API");
+    }
+
+    const data = await apiResponse.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Error in /api/analyze:", error);
+    return NextResponse.json({ error: "Failed to analyze data." }, { status: 500 });
+  }
 }
